@@ -31,7 +31,7 @@ exports.getData = async (req, res) => {
     const latest = recoveries[recoveries.length - 1]
 
     res.json({
-      profile,
+      profile: profile ? { first_name: profile.first_name, last_name: profile.last_name } : null,
       body,
       latest: latest ? {
         date: latest.created_at,
