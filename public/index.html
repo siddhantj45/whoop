@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>WHOOP</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+<div class="frame">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="status-dot" id="status-dot"></div>
+      <div class="topbar-name" id="profile-name">WHOOP</div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-date" id="live-date"></div>
+      <div class="topbar-time" id="live-time"></div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- Recovery ring -->
+    <div class="ring-panel" id="ring-panel">
+      <div class="ring-label">Recovery</div>
+      <div class="ring-wrap" id="ring-wrap">
+        <svg class="ring-svg" id="ring-svg" viewBox="0 0 140 140" width="140" height="140">
+          <circle class="ring-track" id="ring-track" cx="70" cy="70" r="58" stroke-width="10"/>
+          <circle class="ring-fill"  id="ring-arc"   cx="70" cy="70" r="58" stroke-width="10"
+                  stroke="#333" stroke-dasharray="364.4" stroke-dashoffset="364.4"/>
+        </svg>
+        <div class="ring-center">
+          <div class="ring-score" id="ring-score">
+            <span id="ring-num">--</span><span class="ring-pct">%</span>
+          </div>
+          <div class="ring-sublabel">Score</div>
+        </div>
+      </div>
+      <div class="score-badge" id="score-badge" style="color:#333;background:#333;border:1px solid #1e1e1e;">
+        &nbsp;
+      </div>
+    </div>
+
+    <!-- 3 metric cards -->
+    <div class="metrics-panel">
+
+      <div class="metric-card">
+        <div class="metric-left">
+          <div class="metric-name">HRV rMSSD</div>
+          <div class="metric-sub">Heart rate variability</div>
+        </div>
+        <div class="metric-right">
+          <span class="metric-val blue" id="val-hrv">--</span><span class="metric-unit blue">ms</span>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-left">
+          <div class="metric-name">Resting HR</div>
+          <div class="metric-sub">Overnight avg</div>
+        </div>
+        <div class="metric-right">
+          <span class="metric-val red" id="val-rhr">--</span><span class="metric-unit red">bpm</span>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-left">
+          <div class="metric-name">Blood Oxygen</div>
+          <div class="metric-sub">SpO₂ last night</div>
+        </div>
+        <div class="metric-right">
+          <span class="metric-val teal" id="val-spo2">--</span><span class="metric-unit teal">%</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Body bar -->
+  <div class="body-bar">
+    <div class="body-stat">
+      <div class="body-stat-label">Height</div>
+      <div class="body-stat-val"><span id="val-height">--</span><span class="body-stat-unit"> cm</span></div>
+    </div>
+    <div class="body-stat">
+      <div class="body-stat-label">Weight</div>
+      <div class="body-stat-val"><span id="val-weight">--</span><span class="body-stat-unit"> kg</span></div>
+    </div>
+    <div class="body-stat">
+      <div class="body-stat-label">Max HR</div>
+      <div class="body-stat-val"><span id="val-maxhr">--</span><span class="body-stat-unit"> bpm</span></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const RADIUS = 58
+  const CIRCUMFERENCE = 2 * Math.PI * RADIUS  // ~364.4
+
+  function scoreColor(s) {
+    if (s >= 67) return '#00c389'
+    if (s >= 34) return '#f5c518'
+    return '#ff4d4d'
+  }
+
+  function scoreLabel(s) {
+    if (s >= 67) return '● Keep Going · High'
+    if (s >= 34) return '● Do Better · Moderate'
+    return `● You're Just a Bitch · Low`
+  }
+
+  function applyData(d) {
+    // Profile
+    if (d.profile) {
+      document.getElementById('profile-name').textContent =
+        `${d.profile.first_name} ${d.profile.last_name}`
+    }
+
+    // Latest metrics
+    if (d.latest) {
+      const { score, hrv, rhr, spo2 } = d.latest
+      const color = scoreColor(score)
+
+      // Ring arc
+      const arc = document.getElementById('ring-arc')
+      const offset = CIRCUMFERENCE * (1 - score / 100)
+      arc.style.strokeDasharray = CIRCUMFERENCE
+      arc.style.strokeDashoffset = offset
+      arc.style.stroke = color
+      arc.style.filter = `drop-shadow(0 0 7px ${color}90)`
+
+      // Score number
+      const scoreEl = document.getElementById('ring-score')
+      scoreEl.style.color = color
+      document.getElementById('ring-num').textContent = Math.round(score)
+
+      // Badge
+      const badge = document.getElementById('score-badge')
+      badge.textContent = scoreLabel(score)
+      badge.style.color = color
+      badge.style.background = color + '16'
+      badge.style.border = `1px solid ${color}30`
+
+      // Metrics
+      document.getElementById('val-hrv').textContent  = Math.round(hrv)
+      document.getElementById('val-rhr').textContent  = Math.round(rhr)
+      document.getElementById('val-spo2').textContent = parseFloat(spo2).toFixed(1)
+    }
+
+    if (d.body) {
+      const { height_meter, weight_kilogram, max_heart_rate } = d.body
+      document.getElementById('val-height').textContent = Math.round(height_meter * 100)
+      document.getElementById('val-weight').textContent = parseFloat(weight_kilogram).toFixed(1)
+      document.getElementById('val-maxhr').textContent  = max_heart_rate
+    }
+  }
+
+  async function loadData() {
+    const dot = document.getElementById('status-dot')
+    try {
+      const res = await fetch('/whoop/dashboard/data')
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      const d = await res.json()
+      applyData(d)
+      dot.className = 'status-dot live'
+    } catch (err) {
+      console.error('[dashboard] fetch failed:', err.message)
+      dot.className = 'status-dot error'
+    }
+  }
+
+  function tick() {
+    const now = new Date()
+    document.getElementById('live-time').textContent =
+      now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })
+    document.getElementById('live-date').textContent =
+      now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).toUpperCase()
+  }
+
+  // Boot
+  tick()
+  setInterval(tick, 1000)
+  loadData()
+  setInterval(loadData, 45 * 60 * 1000)  // refresh every 45 min
+</script>
+
+</body>
+</html>
