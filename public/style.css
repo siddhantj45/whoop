@@ -63,7 +63,10 @@ html, body {
 }
 
 .topbar-right {
-  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
   min-width: 160px;
   font-size: 12px;
   font-weight: 300;
@@ -71,6 +74,20 @@ html, body {
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.5px;
 }
+
+.fs-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #3a3a3a;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+.fs-btn:hover { color: #777; }
 
 /* ────────────────────────────────────────────
    Main grid  (3 columns × 2 rows)
@@ -669,198 +686,162 @@ html, body {
 
 /* ════════════════════════════════════════════
    RESPONSIVE — PHONE PORTRAIT
-   Single scrollable column. Vitals become
-   a horizontal 3-card row.
+   2-column layout mirroring desktop structure:
+   left = recovery (full height), right = vitals/sleep/strain stacked.
+   No scrolling — everything fits the viewport.
 ════════════════════════════════════════════ */
 @media screen and (orientation: portrait) and (max-width: 600px) {
 
   html, body {
-    overflow-y: auto;
-    height: auto;
+    height: 100%;
+    overflow: hidden;
   }
 
   .frame {
-    height: auto;
-    min-height: 100svh;
-    overflow-y: auto;
+    height: 100dvh;
   }
 
   .topbar {
-    padding: 10px 16px;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: #080808;
+    padding: 7px 14px;
   }
 
   .topbar-left  { min-width: unset; }
-  .topbar-right { min-width: unset; font-size: 13px; }
-  .topbar-center { font-size: 9px; }
+  .topbar-right { min-width: unset; font-size: 12px; gap: 10px; }
+  .topbar-center { font-size: 8px; letter-spacing: 1.2px; }
 
-  /* Switch grid → stacked flex */
+  /* 2-column grid: recovery left (spans 3 rows) | vitals/sleep/strain right */
   .grid {
-    display: flex;
-    flex-direction: column;
-    height: auto;
-    overflow: visible;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    overflow: hidden;
+    flex: 1;
+    min-height: 0;
   }
 
-  /* All panels: full width, auto height, no right border */
   .panel {
-    width: 100%;
-    height: auto;
-    min-height: unset;
-    border-right: none;
+    overflow: hidden;
+    min-height: 0;
+    padding: 10px 11px;
+    border-right: 1px solid #161616;
     border-bottom: 1px solid #161616;
-    overflow: visible;
-    padding: 20px 18px;
   }
 
-  /* ── Recovery: centered, generous ring ── */
+  /* ── Recovery: left column, full height ── */
   .panel-recovery {
-    grid-column: unset;
-    grid-row: unset;
-    border-bottom: 1px solid #161616;
+    grid-column: 1;
+    grid-row: 1 / 4;
+    border-right: 1px solid #161616;
+    border-bottom: none;
     align-items: center;
-    justify-content: flex-start;
-    padding-top: 28px;
-    padding-bottom: 24px;
-    gap: 14px;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 10px;
   }
 
   .ring-svg {
-    width: min(52vw, 210px);
-    height: min(52vw, 210px);
+    width: min(43vw, 175px);
+    height: min(43vw, 175px);
   }
 
-  .ring-score {
-    font-size: clamp(42px, 13vw, 58px);
+  .ring-score { font-size: clamp(30px, 10vw, 48px); }
+
+  .score-badge {
+    font-size: 6px;
+    padding: 2px 8px;
+    letter-spacing: 0.7px;
+    text-align: center;
   }
 
-  /* ── Vitals: horizontal row of 3 mini-cards ── */
+  /* ── Vitals: top-right ── */
   .panel-vitals {
-    grid-column: unset;
-    grid-row: unset;
+    grid-column: 2;
+    grid-row: 1;
+    border-right: none;
     border-bottom: 1px solid #161616;
-    padding: 16px 18px;
   }
 
-  .panel-vitals .panel-label {
-    margin-bottom: 14px;
-  }
+  .panel-vitals .panel-label { margin-bottom: 6px; }
 
   .vital-list {
-    flex-direction: row;
-    justify-content: stretch;
-    align-items: stretch;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-around;
     gap: 0;
-    flex: unset;
   }
 
   .vital-item {
-    flex: 1;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    gap: 6px;
-    padding: 0 14px;
-    border-bottom: none;
-    border-right: 1px solid #141414;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px solid #131313;
+    border-right: none;
   }
+  .vital-item:last-child { border-bottom: none; }
 
-  .vital-item:first-child { padding-left: 0; }
-  .vital-item:last-child  { padding-right: 0; border-right: none; }
-
-  .vital-meta { gap: 3px; }
-
-  .vital-name {
-    font-size: 8px;
-    letter-spacing: 1.4px;
-  }
-
+  .vital-val-wrap { text-align: right; }
+  .vital-val { font-size: clamp(17px, 4.8vw, 24px); letter-spacing: -0.5px; }
+  .vital-unit { font-size: 0.32em; }
+  .vital-name { font-size: 7px; letter-spacing: 1.2px; }
   .vital-sub { display: none; }
 
-  .vital-val-wrap { text-align: left; }
-
-  .vital-val {
-    font-size: clamp(26px, 8vw, 36px);
-    letter-spacing: -0.5px;
-  }
-
-  .vital-unit {
-    font-size: 0.32em;
-    opacity: 0.4;
-  }
-
-  /* ── Sleep: full width ── */
+  /* ── Sleep: middle-right ── */
   .panel-sleep {
-    grid-column: unset;
-    grid-row: unset;
+    grid-column: 2;
+    grid-row: 2;
+    border-right: none;
+    border-bottom: 1px solid #161616;
   }
 
-  .sleep-hours,
-  .sleep-mins {
-    font-size: clamp(30px, 9vw, 44px);
-  }
+  .sleep-header { margin-bottom: 6px; }
 
-  .sleep-score-val {
-    font-size: clamp(16px, 5vw, 22px);
-  }
+  .sleep-hours, .sleep-mins { font-size: clamp(17px, 4.8vw, 24px); }
+  .sleep-unit { font-size: 8px; }
 
-  .sleep-scores { gap: 18px; }
+  .sleep-scores { gap: 8px; }
+  .sleep-score-label { font-size: 6px; }
+  .sleep-score-val { font-size: clamp(11px, 3vw, 15px); }
 
-  .stage-bars {
-    gap: 12px;
-    flex: unset;
-    margin-bottom: 4px;
-  }
+  .stage-bars { gap: 5px; flex: 1; }
+  .stage-track { height: 3px; }
+  .stage-name { font-size: 6.5px; width: 26px; }
+  .stage-pct  { font-size: 7px;   width: 26px; }
 
-  .stage-track { height: 5px; }
+  .resp-row { margin-top: 6px; padding-top: 6px; }
+  .resp-val { font-size: 11px; }
+  .resp-label { font-size: 6.5px; }
+  .resp-unit { font-size: 7px; }
 
-  .stage-name { width: 34px; font-size: 8px; }
-  .stage-pct  { width: 34px; font-size: 9px; }
-
-  .resp-row { margin-top: 12px; padding-top: 12px; }
-  .resp-val { font-size: 16px; }
-
-  /* ── Strain + workouts: full width ── */
+  /* ── Strain: bottom-right ── */
   .panel-strain {
-    grid-column: unset;
-    grid-row: unset;
+    grid-column: 2;
+    grid-row: 3;
+    border-right: none;
     border-bottom: none;
   }
 
-  .strain-val {
-    font-size: clamp(36px, 11vw, 52px);
-  }
+  .strain-val { font-size: clamp(20px, 5.5vw, 30px); }
+  .strain-hero { margin-bottom: 7px; }
+  .strain-track-wrap { margin-bottom: 7px; }
+  .strain-track { height: 4px; }
 
-  .strain-hero { margin-bottom: 16px; }
-  .strain-track-wrap { margin-bottom: 16px; }
-  .strain-track { height: 6px; }
+  .workouts { flex: 1; overflow: hidden; margin-top: 4px; }
+  .no-workouts { font-size: 7.5px; }
+  .workout-item { padding: 5px 0; }
+  .workout-sport { font-size: 9.5px; margin-bottom: 3px; }
+  .wstat { font-size: 10px; }
+  .wunit { font-size: 7px; }
+  .workout-stats { gap: 8px; }
 
-  .workouts {
-    flex: unset;
-    overflow: visible;
-    margin-top: 14px;
-  }
-
-  .workout-item { padding: 12px 0; }
-
-  .workout-sport { font-size: 13px; margin-bottom: 6px; }
-
-  .wstat { font-size: 14px; }
-  .wunit { font-size: 9px; }
-  .workout-stats { gap: 18px; }
-
-  /* ── Footer: stays compact ── */
+  /* ── Footer ── */
   .body-bar {
-    padding: 10px 18px;
+    padding: 5px 14px;
     gap: 0;
     justify-content: space-around;
   }
 
-  .body-divider { display: none; }
-
-  .body-val   { font-size: 14px; }
-  .body-label { font-size: 7px; letter-spacing: 1.5px; }
+  .body-divider { height: 14px; }
+  .body-val   { font-size: 12px; }
+  .body-label { font-size: 6.5px; letter-spacing: 1.4px; }
 }

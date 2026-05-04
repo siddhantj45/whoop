@@ -20,7 +20,15 @@
       <span class="topbar-name" id="profile-name">WHOOP</span>
     </div>
     <div class="topbar-center" id="live-date"></div>
-    <div class="topbar-right" id="live-time"></div>
+    <div class="topbar-right">
+      <span id="live-time"></span>
+      <button class="fs-btn" id="fs-btn" title="Fullscreen">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
+          <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
+        </svg>
+      </button>
+    </div>
   </header>
 
   <!-- ── Main grid ── -->
@@ -334,6 +342,26 @@
   setInterval(tick, 1000)
   loadData()
   setInterval(loadData, 45 * 60 * 1000)
+
+  const fsBtn = document.getElementById('fs-btn')
+  const expandSVG = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>`
+  const compressSVG = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="10" y1="14" x2="3" y2="21"/><line x1="21" y1="3" x2="14" y2="10"/></svg>`
+
+  function updateFsIcon() {
+    fsBtn.innerHTML = (document.fullscreenElement || document.webkitFullscreenElement) ? compressSVG : expandSVG
+  }
+
+  fsBtn.addEventListener('click', () => {
+    const el = document.documentElement
+    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+      ;(el.requestFullscreen || el.webkitRequestFullscreen).call(el)
+    } else {
+      ;(document.exitFullscreen || document.webkitExitFullscreen).call(document)
+    }
+  })
+
+  document.addEventListener('fullscreenchange', updateFsIcon)
+  document.addEventListener('webkitfullscreenchange', updateFsIcon)
 </script>
 
 </body>
