@@ -13,6 +13,7 @@ html, body {
 .frame {
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
 }
@@ -97,7 +98,6 @@ html, body {
   min-height: 0;
 }
 
-/* Section label */
 .panel-label {
   font-size: 8px;
   color: #3a3a3a;
@@ -380,7 +380,6 @@ html, body {
   flex-shrink: 0;
 }
 
-/* Respiratory rate */
 .resp-row {
   display: flex;
   align-items: baseline;
@@ -475,7 +474,6 @@ html, body {
   letter-spacing: 0.3px;
 }
 
-/* Workouts list */
 .workouts {
   flex: 1;
   min-height: 0;
@@ -567,4 +565,302 @@ html, body {
   width: 1px;
   height: 22px;
   background: #1a1a1a;
+}
+
+
+/* ════════════════════════════════════════════
+   RESPONSIVE — PHONE LANDSCAPE
+   Phones in landscape: wide but short (~390px tall)
+   Keep 3-column grid, compress vertically
+════════════════════════════════════════════ */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+
+  .topbar {
+    padding: 5px 14px;
+  }
+
+  .topbar-name { font-size: 10px; }
+  .topbar-center { font-size: 8px; letter-spacing: 1.2px; }
+  .topbar-right { font-size: 11px; }
+
+  .panel {
+    padding: 8px 12px;
+  }
+
+  .panel-label {
+    font-size: 7px;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+
+  /* Recovery: smaller ring */
+  .ring-svg {
+    width: clamp(100px, 16vw, 136px);
+    height: clamp(100px, 16vw, 136px);
+  }
+
+  .ring-score {
+    font-size: clamp(24px, 4vw, 38px);
+  }
+
+  .ring-sublabel { margin-top: 3px; }
+
+  .score-badge {
+    font-size: 7px;
+    padding: 2px 9px;
+    letter-spacing: 0.9px;
+  }
+
+  /* Vitals: tighter */
+  .vital-item { padding: 6px 0; }
+
+  .vital-val {
+    font-size: clamp(20px, 3.2vw, 30px);
+  }
+
+  .vital-name { font-size: 8px; }
+  .vital-sub  { display: none; }
+
+  /* Sleep: compact header + thinner bars */
+  .sleep-hours,
+  .sleep-mins {
+    font-size: clamp(18px, 2.8vw, 26px);
+  }
+
+  .sleep-unit { font-size: 9px; }
+  .sleep-header { margin-bottom: 7px; }
+
+  .sleep-score-label { font-size: 7px; }
+  .sleep-score-val { font-size: clamp(12px, 1.7vw, 16px); }
+  .sleep-scores { gap: 12px; }
+
+  .stage-bars { gap: 5px; }
+  .stage-track { height: 3px; }
+  .stage-name { font-size: 7px; }
+  .stage-pct  { font-size: 8px; }
+
+  .resp-row { margin-top: 7px; padding-top: 7px; }
+  .resp-val { font-size: 13px; }
+
+  /* Strain: compact */
+  .strain-val {
+    font-size: clamp(22px, 3.8vw, 34px);
+  }
+
+  .strain-hero   { margin-bottom: 8px; }
+  .strain-track-wrap { margin-bottom: 8px; }
+  .strain-track  { height: 4px; }
+  .workouts      { margin-top: 8px; }
+  .workout-item  { padding: 6px 0; }
+  .workout-sport { font-size: 10px; margin-bottom: 3px; }
+  .wstat         { font-size: 12px; }
+
+  /* Footer: tighter */
+  .body-bar {
+    padding: 5px 16px;
+    gap: 22px;
+  }
+
+  .body-val   { font-size: 11px; }
+  .body-label { font-size: 6px; letter-spacing: 1.6px; }
+  .body-divider { height: 16px; }
+}
+
+
+/* ════════════════════════════════════════════
+   RESPONSIVE — PHONE PORTRAIT
+   Single scrollable column. Vitals become
+   a horizontal 3-card row.
+════════════════════════════════════════════ */
+@media screen and (orientation: portrait) and (max-width: 600px) {
+
+  html, body {
+    overflow-y: auto;
+    height: auto;
+  }
+
+  .frame {
+    height: auto;
+    min-height: 100svh;
+    overflow-y: auto;
+  }
+
+  .topbar {
+    padding: 10px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #080808;
+  }
+
+  .topbar-left  { min-width: unset; }
+  .topbar-right { min-width: unset; font-size: 13px; }
+  .topbar-center { font-size: 9px; }
+
+  /* Switch grid → stacked flex */
+  .grid {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    overflow: visible;
+  }
+
+  /* All panels: full width, auto height, no right border */
+  .panel {
+    width: 100%;
+    height: auto;
+    min-height: unset;
+    border-right: none;
+    border-bottom: 1px solid #161616;
+    overflow: visible;
+    padding: 20px 18px;
+  }
+
+  /* ── Recovery: centered, generous ring ── */
+  .panel-recovery {
+    grid-column: unset;
+    grid-row: unset;
+    border-bottom: 1px solid #161616;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 28px;
+    padding-bottom: 24px;
+    gap: 14px;
+  }
+
+  .ring-svg {
+    width: min(52vw, 210px);
+    height: min(52vw, 210px);
+  }
+
+  .ring-score {
+    font-size: clamp(42px, 13vw, 58px);
+  }
+
+  /* ── Vitals: horizontal row of 3 mini-cards ── */
+  .panel-vitals {
+    grid-column: unset;
+    grid-row: unset;
+    border-bottom: 1px solid #161616;
+    padding: 16px 18px;
+  }
+
+  .panel-vitals .panel-label {
+    margin-bottom: 14px;
+  }
+
+  .vital-list {
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: stretch;
+    gap: 0;
+    flex: unset;
+  }
+
+  .vital-item {
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 6px;
+    padding: 0 14px;
+    border-bottom: none;
+    border-right: 1px solid #141414;
+  }
+
+  .vital-item:first-child { padding-left: 0; }
+  .vital-item:last-child  { padding-right: 0; border-right: none; }
+
+  .vital-meta { gap: 3px; }
+
+  .vital-name {
+    font-size: 8px;
+    letter-spacing: 1.4px;
+  }
+
+  .vital-sub { display: none; }
+
+  .vital-val-wrap { text-align: left; }
+
+  .vital-val {
+    font-size: clamp(26px, 8vw, 36px);
+    letter-spacing: -0.5px;
+  }
+
+  .vital-unit {
+    font-size: 0.32em;
+    opacity: 0.4;
+  }
+
+  /* ── Sleep: full width ── */
+  .panel-sleep {
+    grid-column: unset;
+    grid-row: unset;
+  }
+
+  .sleep-hours,
+  .sleep-mins {
+    font-size: clamp(30px, 9vw, 44px);
+  }
+
+  .sleep-score-val {
+    font-size: clamp(16px, 5vw, 22px);
+  }
+
+  .sleep-scores { gap: 18px; }
+
+  .stage-bars {
+    gap: 12px;
+    flex: unset;
+    margin-bottom: 4px;
+  }
+
+  .stage-track { height: 5px; }
+
+  .stage-name { width: 34px; font-size: 8px; }
+  .stage-pct  { width: 34px; font-size: 9px; }
+
+  .resp-row { margin-top: 12px; padding-top: 12px; }
+  .resp-val { font-size: 16px; }
+
+  /* ── Strain + workouts: full width ── */
+  .panel-strain {
+    grid-column: unset;
+    grid-row: unset;
+    border-bottom: none;
+  }
+
+  .strain-val {
+    font-size: clamp(36px, 11vw, 52px);
+  }
+
+  .strain-hero { margin-bottom: 16px; }
+  .strain-track-wrap { margin-bottom: 16px; }
+  .strain-track { height: 6px; }
+
+  .workouts {
+    flex: unset;
+    overflow: visible;
+    margin-top: 14px;
+  }
+
+  .workout-item { padding: 12px 0; }
+
+  .workout-sport { font-size: 13px; margin-bottom: 6px; }
+
+  .wstat { font-size: 14px; }
+  .wunit { font-size: 9px; }
+  .workout-stats { gap: 18px; }
+
+  /* ── Footer: stays compact ── */
+  .body-bar {
+    padding: 10px 18px;
+    gap: 0;
+    justify-content: space-around;
+  }
+
+  .body-divider { display: none; }
+
+  .body-val   { font-size: 14px; }
+  .body-label { font-size: 7px; letter-spacing: 1.5px; }
 }
