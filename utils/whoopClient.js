@@ -28,9 +28,9 @@ async function getValidToken() {
 
   await token.update({
     accessToken: data.access_token,
-    refreshToken: data.refresh_token,
+    refreshToken: data.refresh_token || token.refreshToken,
     expiresAt: new Date(Date.now() + data.expires_in * 1000),
-    scope: data.scope
+    scope: data.scope || token.scope
   })
 
   return data.access_token
