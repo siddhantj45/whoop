@@ -71,7 +71,7 @@ exports.callback = async (req, res) => {
       scope: data.scope
     })
 
-    res.json({ success: true, message: 'Whoop connected successfully', scope: data.scope })
+    res.redirect('/')
   } catch (err) {
     res.status(500).json({ success: false, error: err.response?.data || err.message })
   }
