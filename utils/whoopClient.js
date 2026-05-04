@@ -4,16 +4,9 @@ const WhoopToken = require('../models/WhoopToken')
 const WHOOP_BASE = 'https://api.prod.whoop.com/developer'
 const TOKEN_URL = 'https://api.prod.whoop.com/oauth/oauth2/token'
 
-async function getValidToken() {
-  const token = await WhoopToken.findOne({ order: [['createdAt', 'DESC']] })
-  if (!token) throw new Error('Whoop not connected. Visit /whoop/connect to authorize.')
+let refreshPromise = null
 
-  if (new Date() < new Date(token.expiresAt)) {
-    return token.accessToken
-  }
-
-  if (!token.refreshToken) throw new Error('No refresh token. Re-authorize at /whoop/connect.')
-
+async function doRefresh(token) {
   const params = new URLSearchParams({
     grant_type: 'refresh_token',
     refresh_token: token.refreshToken,
@@ -28,12 +21,31 @@ async function getValidToken() {
 
   await token.update({
     accessToken: data.access_token,
-    refreshToken: data.refresh_token || token.refreshToken,
+    refreshToken: data.refresh_token,
     expiresAt: new Date(Date.now() + data.expires_in * 1000),
-    scope: data.scope || token.scope
+    scope: data.scope
   })
 
   return data.access_token
+}
+
+async function getValidToken() {
+  const token = await WhoopToken.findOne({ order: [['createdAt', 'DESC']] })
+  if (!token) throw new Error('Whoop not connected. Visit /whoop/connect to authorize.')
+
+  if (Date.now() < new Date(token.expiresAt).getTime()) {
+    return token.accessToken
+  }
+
+  if (!token.refreshToken) throw new Error('No refresh token. Re-authorize at /whoop/connect.')
+
+  // Serialize concurrent refresh attempts — WHOOP rotating tokens invalidate
+  // the refresh token on first use, so only one refresh can succeed at a time.
+  if (!refreshPromise) {
+    refreshPromise = doRefresh(token).finally(() => { refreshPromise = null })
+  }
+
+  return refreshPromise
 }
 
 async function whoopGet(path, params = {}) {
