@@ -14,8 +14,7 @@ async function fetchAll(endpoint, params = {}) {
 }
 
 exports.getData = async (req, res) => {
-  const since = new Date()
-  since.setHours(0, 0, 0, 0)
+  const since = new Date(Date.now() - 36 * 60 * 60 * 1000)
   const start = since.toISOString()
 
   try {
