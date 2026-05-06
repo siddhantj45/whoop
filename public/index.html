@@ -319,7 +319,7 @@
   async function loadData() {
     const dot = document.getElementById('status-dot')
     try {
-      const res = await fetch('/whoop/dashboard/data')
+      const res = await fetch('/whoop/dashboard/data', { cache: 'no-store' })
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const d = await res.json()
       applyData(d)

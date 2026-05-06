@@ -30,6 +30,7 @@ exports.getData = async (req, res) => {
 
     const latest = recoveries[recoveries.length - 1]
 
+    res.set('Cache-Control', 'no-store')
     res.json({
       profile: profile ? { first_name: profile.first_name, last_name: profile.last_name } : null,
       body,
