@@ -7,6 +7,9 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>WHOOP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" />
   <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
@@ -225,6 +228,7 @@
       arc.style.strokeDashoffset = CIRCUMFERENCE * (1 - score / 100)
       arc.style.stroke  = color
       arc.style.filter  = `drop-shadow(0 0 10px ${color}70)`
+      document.documentElement.style.setProperty('--recovery-glow', color)
 
       const scoreEl = document.getElementById('ring-score')
       scoreEl.style.color = color
@@ -319,7 +323,9 @@
   async function loadData() {
     const dot = document.getElementById('status-dot')
     try {
-      const res = await fetch('/whoop/dashboard/data', { cache: 'no-store' })
+      const localMidnight = new Date()
+      localMidnight.setHours(0, 0, 0, 0)
+      const res = await fetch(`/whoop/dashboard/data?since=${localMidnight.toISOString()}`, { cache: 'no-store' })
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const d = await res.json()
       applyData(d)

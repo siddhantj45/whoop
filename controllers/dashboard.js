@@ -14,17 +14,19 @@ async function fetchAll(endpoint, params = {}) {
 }
 
 exports.getData = async (req, res) => {
-  const since = new Date(Date.now() - 36 * 60 * 60 * 1000)
-  const start = since.toISOString()
+  // todayStart from client (local midnight ISO); fallback to 24h ago
+  const todayStart = req.query.since || new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+  // sleep/recovery look back 36h from now to reliably capture the prior night
+  const sleepStart = new Date(Date.now() - 36 * 60 * 60 * 1000).toISOString()
 
   try {
     const [profile, body, recoveries, sleeps, workouts, cycles] = await Promise.all([
       whoopGet('/v2/user/profile/basic').catch(() => null),
       whoopGet('/v2/user/measurement/body').catch(() => null),
-      fetchAll('/v2/recovery', { start }),
-      fetchAll('/v2/activity/sleep', { start }),
-      fetchAll('/v2/activity/workout', { start }),
-      fetchAll('/v2/cycle', { start })
+      fetchAll('/v2/recovery', { start: sleepStart }),
+      fetchAll('/v2/activity/sleep', { start: sleepStart }),
+      fetchAll('/v2/activity/workout', { start: sleepStart }),
+      fetchAll('/v2/cycle', { start: sleepStart })
     ])
 
     const latest = recoveries[recoveries.length - 1]

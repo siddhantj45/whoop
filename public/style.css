@@ -1,13 +1,38 @@
+:root {
+  --bg: #0a0a0c;
+  --surface: #131316;
+  --border: #21212a;
+  --border-dim: #18181e;
+
+  --text: #f0f0f4;
+  --text-muted: #8888a8;
+  --text-dim: #48485e;
+
+  --green: #00e5a0;
+  --yellow: #fbbf24;
+  --red: #f87171;
+  --blue: #60a5fa;
+  --coral: #f87171;
+  --teal: #34d399;
+  --violet: #a78bfa;
+
+  --recovery-glow: transparent;
+
+  --r: 10px;
+  --num: 'Bebas Neue', sans-serif;
+  --body: 'Outfit', sans-serif;
+}
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  background: #080808;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', sans-serif;
-  color: #f0f0f0;
+  background: var(--bg);
+  font-family: var(--body);
+  color: var(--text);
   -webkit-font-smoothing: antialiased;
+  overflow: hidden;
 }
 
 .frame {
@@ -18,148 +43,155 @@ html, body {
   flex-direction: column;
 }
 
-/* ────────────────────────────────────────────
-   Top bar
-──────────────────────────────────────────── */
+/* ── Topbar ── */
 .topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 20px;
-  border-bottom: 1px solid #161616;
+  padding: 0 18px;
+  height: 42px;
   flex-shrink: 0;
+  border-bottom: 1px solid var(--border-dim);
 }
 
 .topbar-left {
   display: flex;
   align-items: center;
-  gap: 8px;
-  min-width: 160px;
+  gap: 9px;
+  min-width: 130px;
 }
 
 .status-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #2a2a2a;
+  background: #2a2a3a;
   flex-shrink: 0;
   transition: background 0.4s, box-shadow 0.4s;
 }
-.status-dot.live  { background: #00c389; box-shadow: 0 0 7px #00c389aa; }
-.status-dot.error { background: #ff4d4d; box-shadow: 0 0 7px #ff4d4daa; }
+.status-dot.live  { background: var(--green); box-shadow: 0 0 8px color-mix(in srgb, var(--green) 60%, transparent); }
+.status-dot.error { background: var(--red);   box-shadow: 0 0 7px color-mix(in srgb, var(--red) 60%, transparent); }
 
 .topbar-name {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
-  color: #888;
-  letter-spacing: 0.3px;
+  color: var(--text-muted);
+  letter-spacing: 0.2px;
 }
 
 .topbar-center {
-  font-size: 9px;
-  color: #444;
-  letter-spacing: 1.6px;
-  text-align: center;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
 .topbar-right {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 14px;
-  min-width: 160px;
-  font-size: 12px;
-  font-weight: 300;
-  color: #666;
+  gap: 12px;
+  min-width: 130px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-muted);
   font-variant-numeric: tabular-nums;
-  letter-spacing: 0.5px;
 }
 
 .fs-btn {
   background: none;
   border: none;
   cursor: pointer;
-  color: #3a3a3a;
+  color: var(--text-dim);
   padding: 4px;
   display: flex;
   align-items: center;
-  border-radius: 4px;
+  border-radius: 6px;
   transition: color 0.2s;
-  flex-shrink: 0;
 }
-.fs-btn:hover { color: #777; }
+.fs-btn:hover { color: var(--text-muted); }
 
-/* ────────────────────────────────────────────
-   Main grid  (3 columns × 2 rows)
-   Col A: recovery (row 1–2)
-   Col B: vitals   (row 1–2)
-   Col C top: sleep
-   Col C bot: strain
-──────────────────────────────────────────── */
+/* ── Grid ── */
 .grid {
   flex: 1;
   display: grid;
-  grid-template-columns: 1fr 0.72fr 1.08fr;
+  grid-template-columns: 1.1fr 0.8fr 1.1fr;
   grid-template-rows: 1fr 1fr;
+  gap: 8px;
+  padding: 8px;
   overflow: hidden;
   min-height: 0;
 }
 
 .panel {
-  border-right: 1px solid #161616;
-  border-bottom: 1px solid #161616;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
   display: flex;
   flex-direction: column;
-  padding: 16px 20px;
+  padding: 16px 18px;
   overflow: hidden;
   min-height: 0;
 }
 
 .panel-label {
-  font-size: 8px;
-  color: #3a3a3a;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-dim);
   text-transform: uppercase;
-  letter-spacing: 2.8px;
-  font-weight: 700;
+  letter-spacing: 2.5px;
   flex-shrink: 0;
   margin-bottom: 12px;
 }
 
-/* ────────────────────────────────────────────
-   Panel A: Recovery ring
-──────────────────────────────────────────── */
+/* ── Recovery ── */
 .panel-recovery {
   grid-column: 1;
   grid-row: 1 / 3;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  border-bottom: none;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Ambient glow that responds to score color */
+.panel-recovery::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--r);
+  background: radial-gradient(ellipse at 50% 50%, color-mix(in srgb, var(--recovery-glow) 8%, transparent) 0%, transparent 65%);
+  pointer-events: none;
+  transition: background 0.8s ease;
+}
+
+.panel-recovery .panel-label {
+  position: absolute;
+  top: 16px;
+  left: 18px;
 }
 
 .ring-wrap {
   position: relative;
   flex-shrink: 0;
+  z-index: 1;
 }
 
 .ring-svg {
   transform: rotate(-90deg);
   display: block;
-  width: clamp(150px, 22vw, 210px);
-  height: clamp(150px, 22vw, 210px);
+  width: clamp(160px, 21vw, 220px);
+  height: clamp(160px, 21vw, 220px);
 }
 
-.ring-track {
-  fill: none;
-  stroke: #191919;
-}
+.ring-track { fill: none; stroke: #1e1e26; }
 
 .ring-fill {
   fill: none;
   stroke-linecap: round;
-  transition: stroke-dashoffset 1.3s cubic-bezier(0.4, 0, 0.2, 1),
-              stroke 0.5s ease,
-              filter 0.5s ease;
+  transition: stroke-dashoffset 1.4s cubic-bezier(0.4, 0, 0.2, 1),
+              stroke 0.5s ease, filter 0.5s ease;
 }
 
 .ring-center {
@@ -172,48 +204,48 @@ html, body {
 }
 
 .ring-score {
-  font-weight: 800;
-  line-height: 1;
+  font-family: var(--num);
+  line-height: 0.88;
   font-variant-numeric: tabular-nums;
-  font-size: clamp(38px, 5.5vw, 58px);
+  font-size: clamp(58px, 7.5vw, 88px);
   transition: color 0.5s ease;
-  letter-spacing: -1px;
+  letter-spacing: 1px;
 }
 
 .ring-pct {
-  font-weight: 400;
-  opacity: 0.35;
-  font-size: 0.34em;
-  letter-spacing: 0;
+  font-family: var(--body);
+  font-weight: 300;
+  opacity: 0.45;
+  font-size: 0.26em;
+  vertical-align: super;
 }
 
 .ring-sublabel {
-  font-size: 7px;
-  color: #444;
-  letter-spacing: 2.2px;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 2.5px;
   text-transform: uppercase;
-  margin-top: 5px;
+  margin-top: 7px;
+  font-weight: 500;
 }
 
 .score-badge {
-  font-size: 8px;
-  font-weight: 700;
-  letter-spacing: 1.2px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
   border-radius: 20px;
-  padding: 3px 13px;
+  padding: 5px 16px;
   text-transform: uppercase;
   border: 1px solid transparent;
   transition: color 0.5s, background 0.5s, border-color 0.5s;
   flex-shrink: 0;
+  z-index: 1;
 }
 
-/* ────────────────────────────────────────────
-   Panel B: Vitals
-──────────────────────────────────────────── */
+/* ── Vitals ── */
 .panel-vitals {
   grid-column: 2;
   grid-row: 1 / 3;
-  border-bottom: none;
 }
 
 .vital-list {
@@ -228,9 +260,8 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid #131313;
-  flex-shrink: 0;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-dim);
 }
 .vital-item:last-child { border-bottom: none; }
 
@@ -241,16 +272,17 @@ html, body {
 }
 
 .vital-name {
-  font-size: clamp(8px, 1.1vw, 10px);
-  color: #666;
+  font-size: 11px;
+  color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 1.8px;
+  letter-spacing: 1.5px;
   font-weight: 600;
 }
 
 .vital-sub {
-  font-size: clamp(8px, 0.9vw, 9px);
-  color: #363636;
+  font-size: 10px;
+  color: var(--text-dim);
+  font-weight: 400;
 }
 
 .vital-val-wrap {
@@ -259,32 +291,29 @@ html, body {
 }
 
 .vital-val {
-  font-weight: 700;
+  font-family: var(--num);
   font-variant-numeric: tabular-nums;
-  font-size: clamp(30px, 4.2vw, 46px);
-  letter-spacing: -1px;
+  font-size: clamp(40px, 5vw, 58px);
+  letter-spacing: 0.5px;
 }
 
 .vital-unit {
+  font-family: var(--body);
   font-weight: 400;
-  opacity: 0.3;
+  opacity: 0.4;
   font-size: 0.28em;
   margin-left: 2px;
-  letter-spacing: 0;
 }
 
-.blue   { color: #60a5fa; }
-.red    { color: #fb7185; }
-.teal   { color: #2dd4bf; }
-.purple { color: #c4b5fd; }
+.blue   { color: var(--blue); }
+.red    { color: var(--coral); }
+.teal   { color: var(--teal); }
+.purple { color: var(--violet); }
 
-/* ────────────────────────────────────────────
-   Panel C top: Sleep
-──────────────────────────────────────────── */
+/* ── Sleep ── */
 .panel-sleep {
   grid-column: 3;
   grid-row: 1;
-  border-right: none;
 }
 
 .sleep-header {
@@ -298,49 +327,49 @@ html, body {
 .sleep-duration-wrap {
   display: flex;
   align-items: baseline;
-  gap: 3px;
+  gap: 2px;
   line-height: 1;
 }
 
 .sleep-hours,
 .sleep-mins {
-  font-size: clamp(26px, 3.8vw, 40px);
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  color: #c4b5fd;
-  letter-spacing: -1px;
+  font-family: var(--num);
+  font-size: clamp(32px, 4.2vw, 50px);
+  color: var(--violet);
+  letter-spacing: 0.5px;
 }
 
 .sleep-unit {
-  font-size: 11px;
-  color: #444;
+  font-size: 12px;
+  color: var(--text-dim);
   font-weight: 400;
-  margin-right: 5px;
+  margin-right: 4px;
+  align-self: flex-end;
+  padding-bottom: 4px;
 }
 
 .sleep-scores {
   display: flex;
-  gap: 20px;
+  gap: 18px;
   flex-shrink: 0;
 }
 
-.sleep-score-item {
-  text-align: right;
-}
+.sleep-score-item { text-align: right; }
 
 .sleep-score-label {
-  font-size: 7.5px;
-  color: #3a3a3a;
+  font-size: 9px;
+  color: var(--text-dim);
   text-transform: uppercase;
-  letter-spacing: 1.4px;
+  letter-spacing: 1.2px;
   font-weight: 600;
   margin-bottom: 3px;
 }
 
 .sleep-score-val {
-  font-size: clamp(14px, 2vw, 20px);
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
+  font-family: var(--num);
+  font-size: clamp(18px, 2.4vw, 26px);
+  color: var(--violet);
+  letter-spacing: 0.5px;
 }
 
 /* Sleep stage bars */
@@ -360,115 +389,113 @@ html, body {
 }
 
 .stage-name {
-  font-size: 7.5px;
-  color: #444;
+  font-size: 10px;
+  color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  width: 30px;
+  letter-spacing: 1.2px;
+  width: 36px;
   flex-shrink: 0;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .stage-track {
   flex: 1;
-  height: 4px;
-  background: #181818;
-  border-radius: 2px;
+  height: 6px;
+  background: var(--border-dim);
+  border-radius: 3px;
   overflow: hidden;
 }
 
 .stage-fill {
   height: 100%;
-  border-radius: 2px;
+  border-radius: 3px;
   width: 0%;
-  transition: width 1.1s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.s-rem   { background: #a78bfa; box-shadow: 0 0 8px #a78bfa50; }
-.s-deep  { background: #818cf8; box-shadow: 0 0 8px #818cf850; }
-.s-light { background: #6366f1; box-shadow: 0 0 8px #6366f150; }
+.s-rem   { background: #a78bfa; box-shadow: 0 0 8px #a78bfa44; }
+.s-deep  { background: #7c6ff5; box-shadow: 0 0 8px #7c6ff544; }
+.s-light { background: #5b63ea; box-shadow: 0 0 8px #5b63ea44; }
 
 .stage-pct {
-  font-size: 9px;
-  color: #444;
+  font-size: 10px;
+  color: var(--text-muted);
   font-variant-numeric: tabular-nums;
-  width: 30px;
+  width: 32px;
   text-align: right;
   flex-shrink: 0;
+  font-weight: 500;
 }
 
 .resp-row {
   display: flex;
-  align-items: baseline;
-  gap: 7px;
+  align-items: center;
+  gap: 8px;
   margin-top: 10px;
   padding-top: 10px;
-  border-top: 1px solid #131313;
+  border-top: 1px solid var(--border-dim);
   flex-shrink: 0;
 }
 
 .resp-label {
-  font-size: 7.5px;
-  color: #333;
+  font-size: 10px;
+  color: var(--text-dim);
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 1.2px;
   font-weight: 600;
   flex: 1;
 }
 
 .resp-val {
-  font-size: 15px;
-  font-weight: 600;
-  color: #666;
+  font-family: var(--num);
+  font-size: 20px;
+  color: var(--text-muted);
   font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5px;
 }
 
 .resp-unit {
-  font-size: 8px;
-  color: #333;
+  font-size: 10px;
+  color: var(--text-dim);
 }
 
-/* ────────────────────────────────────────────
-   Panel D: Strain + Workouts
-──────────────────────────────────────────── */
+/* ── Strain ── */
 .panel-strain {
   grid-column: 3;
   grid-row: 2;
-  border-right: none;
-  border-bottom: none;
 }
 
 .strain-hero {
   display: flex;
   align-items: baseline;
-  gap: 7px;
-  margin-bottom: 14px;
+  gap: 8px;
+  margin-bottom: 12px;
   flex-shrink: 0;
 }
 
 .strain-val {
-  font-size: clamp(32px, 4.8vw, 50px);
-  font-weight: 800;
-  font-variant-numeric: tabular-nums;
-  color: #e8e8e8;
-  letter-spacing: -1px;
+  font-family: var(--num);
+  font-size: clamp(40px, 5.2vw, 60px);
+  color: var(--text);
+  letter-spacing: 0.5px;
   line-height: 1;
+  transition: color 0.5s;
 }
 
 .strain-max {
-  font-size: 12px;
-  color: #333;
+  font-size: 13px;
+  color: var(--text-dim);
   font-weight: 400;
 }
 
 .strain-track-wrap {
   flex-shrink: 0;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .strain-track {
-  height: 5px;
-  background: #181818;
+  height: 6px;
+  background: var(--border-dim);
   border-radius: 3px;
   overflow: hidden;
   margin-bottom: 5px;
@@ -478,76 +505,68 @@ html, body {
   height: 100%;
   border-radius: 3px;
   width: 0%;
-  background: linear-gradient(90deg, #00c38960, #00c389);
-  transition: width 1.1s cubic-bezier(0.4, 0, 0.2, 1),
-              background 0.5s ease;
+  transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1), background 0.5s ease;
 }
 
 .strain-ticks {
   display: flex;
   justify-content: space-between;
-  font-size: 7px;
-  color: #2a2a2a;
+  font-size: 9px;
+  color: var(--text-dim);
   letter-spacing: 0.3px;
+  font-weight: 500;
 }
 
-.workouts {
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
-}
+.workouts { flex: 1; min-height: 0; overflow: hidden; }
 
 .no-workouts {
-  font-size: 8.5px;
-  color: #2a2a2a;
+  font-size: 10px;
+  color: var(--text-dim);
   text-transform: uppercase;
-  letter-spacing: 1.8px;
-  font-weight: 600;
+  letter-spacing: 1.5px;
+  font-weight: 500;
   padding: 4px 0;
 }
 
 .workout-item {
   padding: 9px 0;
-  border-bottom: 1px solid #131313;
+  border-bottom: 1px solid var(--border-dim);
 }
 .workout-item:last-child { border-bottom: none; }
 
 .workout-sport {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
-  color: #888;
+  color: var(--text-muted);
   margin-bottom: 5px;
-  letter-spacing: 0.2px;
+  text-transform: capitalize;
 }
 
-.workout-stats {
-  display: flex;
-  gap: 16px;
-}
+.workout-stats { display: flex; gap: 14px; }
 
 .wstat {
-  font-size: 13px;
-  font-weight: 600;
-  color: #666;
+  font-family: var(--num);
+  font-size: 17px;
+  color: var(--text-muted);
   font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5px;
 }
 
 .wunit {
-  font-size: 8px;
-  color: #363636;
+  font-family: var(--body);
+  font-size: 9px;
+  color: var(--text-dim);
   font-weight: 400;
 }
 
-/* ────────────────────────────────────────────
-   Footer: body stats
-──────────────────────────────────────────── */
+/* ── Footer ── */
 .body-bar {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 36px;
-  padding: 8px 24px;
-  border-top: 1px solid #161616;
+  gap: 32px;
+  padding: 7px 24px;
+  border-top: 1px solid var(--border-dim);
   flex-shrink: 0;
 }
 
@@ -559,282 +578,162 @@ html, body {
 }
 
 .body-label {
-  font-size: 7px;
-  color: #333;
+  font-size: 9px;
+  color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 2px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .body-val {
-  font-size: 13px;
-  font-weight: 600;
-  color: #777;
+  font-family: var(--num);
+  font-size: 16px;
+  color: var(--text-muted);
   font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5px;
 }
 
 .body-unit {
-  font-size: 8px;
-  color: #383838;
+  font-size: 9px;
+  color: var(--text-dim);
 }
 
 .body-divider {
   width: 1px;
-  height: 22px;
-  background: #1a1a1a;
+  height: 20px;
+  background: var(--border);
 }
 
 
 /* ════════════════════════════════════════════
-   RESPONSIVE — PHONE LANDSCAPE
-   Phones in landscape: wide but short (~390px tall)
-   Keep 3-column grid, compress vertically
+   LANDSCAPE PHONE  (wide, short)
 ════════════════════════════════════════════ */
 @media screen and (orientation: landscape) and (max-height: 500px) {
 
-  .topbar {
-    padding: 5px 14px;
-  }
+  .topbar { height: 36px; }
 
-  .topbar-name { font-size: 10px; }
-  .topbar-center { font-size: 8px; letter-spacing: 1.2px; }
-  .topbar-right { font-size: 11px; }
+  .grid { gap: 5px; padding: 5px; }
+  .panel { padding: 8px 12px; }
+  .panel-label { font-size: 9px; letter-spacing: 2px; margin-bottom: 6px; }
 
-  .panel {
-    padding: 8px 12px;
-  }
+  .ring-svg { width: clamp(100px, 17vw, 140px); height: clamp(100px, 17vw, 140px); }
+  .ring-score { font-size: clamp(32px, 5vw, 48px); }
+  .score-badge { font-size: 8px; padding: 3px 10px; }
 
-  .panel-label {
-    font-size: 7px;
-    letter-spacing: 2px;
-    margin-bottom: 6px;
-  }
+  .vital-item { padding: 8px 0; }
+  .vital-val { font-size: clamp(24px, 3.5vw, 36px); }
+  .vital-sub { display: none; }
 
-  /* Recovery: smaller ring */
-  .ring-svg {
-    width: clamp(100px, 16vw, 136px);
-    height: clamp(100px, 16vw, 136px);
-  }
+  .sleep-hours, .sleep-mins { font-size: clamp(22px, 3.2vw, 30px); }
+  .sleep-score-val { font-size: clamp(14px, 2vw, 19px); }
+  .sleep-header { margin-bottom: 8px; }
+  .stage-track { height: 4px; }
+  .resp-val { font-size: 17px; }
 
-  .ring-score {
-    font-size: clamp(24px, 4vw, 38px);
-  }
+  .strain-val { font-size: clamp(28px, 4.2vw, 40px); }
+  .strain-hero { margin-bottom: 7px; }
+  .strain-track-wrap { margin-bottom: 7px; }
+  .workout-item { padding: 6px 0; }
 
-  .ring-sublabel { margin-top: 3px; }
-
-  .score-badge {
-    font-size: 7px;
-    padding: 2px 9px;
-    letter-spacing: 0.9px;
-  }
-
-  /* Vitals: tighter */
-  .vital-item { padding: 6px 0; }
-
-  .vital-val {
-    font-size: clamp(20px, 3.2vw, 30px);
-  }
-
-  .vital-name { font-size: 8px; }
-  .vital-sub  { display: none; }
-
-  /* Sleep: compact header + thinner bars */
-  .sleep-hours,
-  .sleep-mins {
-    font-size: clamp(18px, 2.8vw, 26px);
-  }
-
-  .sleep-unit { font-size: 9px; }
-  .sleep-header { margin-bottom: 7px; }
-
-  .sleep-score-label { font-size: 7px; }
-  .sleep-score-val { font-size: clamp(12px, 1.7vw, 16px); }
-  .sleep-scores { gap: 12px; }
-
-  .stage-bars { gap: 5px; }
-  .stage-track { height: 3px; }
-  .stage-name { font-size: 7px; }
-  .stage-pct  { font-size: 8px; }
-
-  .resp-row { margin-top: 7px; padding-top: 7px; }
-  .resp-val { font-size: 13px; }
-
-  /* Strain: compact */
-  .strain-val {
-    font-size: clamp(22px, 3.8vw, 34px);
-  }
-
-  .strain-hero   { margin-bottom: 8px; }
-  .strain-track-wrap { margin-bottom: 8px; }
-  .strain-track  { height: 4px; }
-  .workouts      { margin-top: 8px; }
-  .workout-item  { padding: 6px 0; }
-  .workout-sport { font-size: 10px; margin-bottom: 3px; }
-  .wstat         { font-size: 12px; }
-
-  /* Footer: tighter */
-  .body-bar {
-    padding: 5px 16px;
-    gap: 22px;
-  }
-
-  .body-val   { font-size: 11px; }
-  .body-label { font-size: 6px; letter-spacing: 1.6px; }
-  .body-divider { height: 16px; }
+  .body-bar { padding: 4px 14px; gap: 20px; }
+  .body-val { font-size: 14px; }
+  .body-label { font-size: 8px; }
 }
 
 
 /* ════════════════════════════════════════════
-   RESPONSIVE — PHONE PORTRAIT
-   2-column layout mirroring desktop structure:
-   left = recovery (full height), right = vitals/sleep/strain stacked.
-   No scrolling — everything fits the viewport.
+   PORTRAIT PHONE  (2-col, no scroll)
 ════════════════════════════════════════════ */
 @media screen and (orientation: portrait) and (max-width: 600px) {
 
-  html, body {
-    height: 100%;
-    overflow: hidden;
-  }
+  html, body { overflow: hidden; height: 100%; }
+  .frame { height: 100dvh; }
 
-  .frame {
-    height: 100dvh;
-  }
-
-  .topbar {
-    padding: 7px 14px;
-  }
-
+  .topbar { height: 38px; padding: 0 13px; }
   .topbar-left  { min-width: unset; }
   .topbar-right { min-width: unset; font-size: 12px; gap: 10px; }
-  .topbar-center { font-size: 8px; letter-spacing: 1.2px; }
+  .topbar-name  { font-size: 12px; }
+  .topbar-center { font-size: 9px; letter-spacing: 1.5px; }
 
-  /* 2-column grid: recovery left (spans 3 rows) | vitals/sleep/strain right */
   .grid {
-    display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
-    overflow: hidden;
-    flex: 1;
-    min-height: 0;
+    gap: 6px;
+    padding: 6px;
   }
 
-  .panel {
-    overflow: hidden;
-    min-height: 0;
-    padding: 10px 11px;
-    border-right: 1px solid #161616;
-    border-bottom: 1px solid #161616;
-  }
+  .panel { padding: 10px 11px; }
+  .panel-label { font-size: 9px; letter-spacing: 2px; margin-bottom: 7px; }
 
-  /* ── Recovery: left column, full height ── */
+  /* Recovery: left col, full height */
   .panel-recovery {
     grid-column: 1;
     grid-row: 1 / 4;
-    border-right: 1px solid #161616;
-    border-bottom: none;
-    align-items: center;
-    justify-content: center;
     gap: 10px;
-    padding: 12px 10px;
+    padding: 10px 9px;
+  }
+
+  .panel-recovery .panel-label {
+    top: 10px;
+    left: 11px;
   }
 
   .ring-svg {
-    width: min(43vw, 175px);
-    height: min(43vw, 175px);
+    width: min(43vw, 168px);
+    height: min(43vw, 168px);
   }
 
-  .ring-score { font-size: clamp(30px, 10vw, 48px); }
+  .ring-score { font-size: clamp(36px, 11vw, 54px); }
 
   .score-badge {
-    font-size: 6px;
-    padding: 2px 8px;
-    letter-spacing: 0.7px;
+    font-size: 7px;
+    padding: 3px 9px;
     text-align: center;
   }
 
-  /* ── Vitals: top-right ── */
+  /* Vitals: top-right */
   .panel-vitals {
     grid-column: 2;
     grid-row: 1;
-    border-right: none;
-    border-bottom: 1px solid #161616;
   }
 
-  .panel-vitals .panel-label { margin-bottom: 6px; }
-
-  .vital-list {
-    flex: 1;
-    flex-direction: column;
-    justify-content: space-around;
-    gap: 0;
-  }
-
-  .vital-item {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 4px 0;
-    border-bottom: 1px solid #131313;
-    border-right: none;
-  }
-  .vital-item:last-child { border-bottom: none; }
-
-  .vital-val-wrap { text-align: right; }
-  .vital-val { font-size: clamp(17px, 4.8vw, 24px); letter-spacing: -0.5px; }
-  .vital-unit { font-size: 0.32em; }
-  .vital-name { font-size: 7px; letter-spacing: 1.2px; }
+  .vital-item { padding: 5px 0; }
+  .vital-val { font-size: clamp(21px, 6vw, 28px); }
+  .vital-name { font-size: 9px; letter-spacing: 1px; }
   .vital-sub { display: none; }
 
-  /* ── Sleep: middle-right ── */
+  /* Sleep: mid-right */
   .panel-sleep {
     grid-column: 2;
     grid-row: 2;
-    border-right: none;
-    border-bottom: 1px solid #161616;
   }
 
-  .sleep-header { margin-bottom: 6px; }
+  .sleep-hours, .sleep-mins { font-size: clamp(20px, 5.5vw, 28px); }
+  .sleep-header { margin-bottom: 6px; flex-wrap: wrap; gap: 4px; }
+  .sleep-scores { gap: 6px; }
+  .sleep-score-label { font-size: 6.5px; letter-spacing: 0.8px; }
+  .sleep-score-val { font-size: clamp(12px, 3.5vw, 16px); }
+  .stage-track { height: 4px; }
+  .stage-name { font-size: 8px; width: 28px; }
+  .stage-pct  { font-size: 8px; width: 26px; }
+  .resp-row { margin-top: 7px; padding-top: 7px; }
+  .resp-val { font-size: 16px; }
 
-  .sleep-hours, .sleep-mins { font-size: clamp(17px, 4.8vw, 24px); }
-  .sleep-unit { font-size: 8px; }
-
-  .sleep-scores { gap: 8px; }
-  .sleep-score-label { font-size: 6px; }
-  .sleep-score-val { font-size: clamp(11px, 3vw, 15px); }
-
-  .stage-bars { gap: 5px; flex: 1; }
-  .stage-track { height: 3px; }
-  .stage-name { font-size: 6.5px; width: 26px; }
-  .stage-pct  { font-size: 7px;   width: 26px; }
-
-  .resp-row { margin-top: 6px; padding-top: 6px; }
-  .resp-val { font-size: 11px; }
-  .resp-label { font-size: 6.5px; }
-  .resp-unit { font-size: 7px; }
-
-  /* ── Strain: bottom-right ── */
+  /* Strain: bottom-right */
   .panel-strain {
     grid-column: 2;
     grid-row: 3;
-    border-right: none;
-    border-bottom: none;
   }
 
-  .strain-val { font-size: clamp(20px, 5.5vw, 30px); }
+  .strain-val { font-size: clamp(24px, 7vw, 34px); }
   .strain-hero { margin-bottom: 7px; }
   .strain-track-wrap { margin-bottom: 7px; }
-  .strain-track { height: 4px; }
-
-  .workouts { flex: 1; overflow: hidden; margin-top: 4px; }
-  .no-workouts { font-size: 7.5px; }
   .workout-item { padding: 5px 0; }
-  .workout-sport { font-size: 9.5px; margin-bottom: 3px; }
-  .wstat { font-size: 10px; }
-  .wunit { font-size: 7px; }
+  .workout-sport { font-size: 10px; }
+  .wstat { font-size: 13px; }
   .workout-stats { gap: 8px; }
 
-  /* ── Footer ── */
+  /* Footer */
   .body-bar {
     padding: 5px 14px;
     gap: 0;
@@ -842,6 +741,6 @@ html, body {
   }
 
   .body-divider { height: 14px; }
-  .body-val   { font-size: 12px; }
-  .body-label { font-size: 6.5px; letter-spacing: 1.4px; }
+  .body-val   { font-size: 13px; }
+  .body-label { font-size: 7px; }
 }
