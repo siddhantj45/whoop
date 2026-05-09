@@ -25,7 +25,7 @@ exports.getData = async (req, res) => {
       whoopGet('/v2/user/measurement/body').catch(() => null),
       fetchAll('/v2/recovery', { start: sleepStart }),
       fetchAll('/v2/activity/sleep', { start: sleepStart }),
-      fetchAll('/v2/activity/workout', { start: sleepStart }),
+      fetchAll('/v2/activity/workout', { start: todayStart }),
       fetchAll('/v2/cycle', { start: sleepStart })
     ])
 
