@@ -3,20 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
-  <meta name="theme-color" content="#080808" />
+  <meta name="theme-color" content="#07080a" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>WHOOP</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Manrope:wght@400;500;600;700&display=swap" />
   <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
 
 <div class="frame">
 
-  <!-- ── Top bar ── -->
   <header class="topbar">
     <div class="topbar-left">
       <div class="status-dot" id="status-dot"></div>
@@ -25,8 +24,8 @@
     <div class="topbar-center" id="live-date"></div>
     <div class="topbar-right">
       <span id="live-time"></span>
-      <button class="fs-btn" id="fs-btn" title="Fullscreen">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <button class="fs-btn" id="fs-btn" title="Fullscreen" aria-label="Fullscreen">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
           <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
         </svg>
@@ -34,71 +33,76 @@
     </div>
   </header>
 
-  <!-- ── Main grid ── -->
   <div class="grid">
 
-    <!-- Col A: Recovery ring (spans full height) -->
-    <div class="panel panel-recovery">
+    <section class="panel panel-recovery">
       <div class="panel-label">Recovery</div>
-      <div class="ring-wrap">
-        <svg class="ring-svg" viewBox="0 0 200 200">
-          <circle class="ring-track" cx="100" cy="100" r="82" stroke-width="13"/>
-          <circle class="ring-fill" id="ring-arc" cx="100" cy="100" r="82" stroke-width="13"
-                  stroke="#252525" stroke-dasharray="515.2" stroke-dashoffset="515.2"/>
-        </svg>
-        <div class="ring-center">
-          <div class="ring-score" id="ring-score">
-            <span id="ring-num">--</span><span class="ring-pct">%</span>
+      <div class="recovery-body">
+        <div class="recovery-hero">
+          <div class="ring-wrap">
+            <svg class="ring-svg" viewBox="0 0 200 200" aria-hidden="true">
+              <circle class="ring-halo" cx="100" cy="100" r="94"/>
+              <circle class="ring-track" cx="100" cy="100" r="82" stroke-width="8"/>
+              <circle class="ring-fill" id="ring-arc" cx="100" cy="100" r="82" stroke-width="8"
+                      stroke="#2a2a2e" stroke-dasharray="515.2" stroke-dashoffset="515.2"/>
+            </svg>
+            <div class="ring-center">
+              <div class="ring-score" id="ring-score">
+                <span id="ring-num">--</span><span class="ring-pct">%</span>
+              </div>
+              <div class="ring-sublabel">Score</div>
+            </div>
           </div>
-          <div class="ring-sublabel">Score</div>
+          <div class="score-badge" id="score-badge"></div>
+        </div>
+
+        <div class="vital-list">
+          <div class="vital-item">
+            <div class="vital-meta">
+              <span class="swatch swatch-hrv"></span>
+              <div>
+                <div class="vital-name">HRV</div>
+                <div class="vital-sub">Heart rate variability</div>
+              </div>
+            </div>
+            <div class="vital-val-wrap">
+              <span class="vital-val" id="val-hrv">--</span>
+              <span class="vital-unit">ms</span>
+            </div>
+          </div>
+
+          <div class="vital-item">
+            <div class="vital-meta">
+              <span class="swatch swatch-rhr"></span>
+              <div>
+                <div class="vital-name">Resting HR</div>
+                <div class="vital-sub">Overnight average</div>
+              </div>
+            </div>
+            <div class="vital-val-wrap">
+              <span class="vital-val" id="val-rhr">--</span>
+              <span class="vital-unit">bpm</span>
+            </div>
+          </div>
+
+          <div class="vital-item">
+            <div class="vital-meta">
+              <span class="swatch swatch-spo2"></span>
+              <div>
+                <div class="vital-name">SpO₂</div>
+                <div class="vital-sub">Blood oxygen</div>
+              </div>
+            </div>
+            <div class="vital-val-wrap">
+              <span class="vital-val" id="val-spo2">--</span>
+              <span class="vital-unit">%</span>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="score-badge" id="score-badge">&nbsp;</div>
-    </div>
+    </section>
 
-    <!-- Col B: Vitals (spans full height) -->
-    <div class="panel panel-vitals">
-      <div class="panel-label">Vitals</div>
-      <div class="vital-list">
-
-        <div class="vital-item">
-          <div class="vital-meta">
-            <div class="vital-name">HRV rMSSD</div>
-            <div class="vital-sub">Heart rate variability</div>
-          </div>
-          <div class="vital-val-wrap">
-            <span class="vital-val blue" id="val-hrv">--</span>
-            <span class="vital-unit blue">ms</span>
-          </div>
-        </div>
-
-        <div class="vital-item">
-          <div class="vital-meta">
-            <div class="vital-name">Resting HR</div>
-            <div class="vital-sub">Overnight average</div>
-          </div>
-          <div class="vital-val-wrap">
-            <span class="vital-val red" id="val-rhr">--</span>
-            <span class="vital-unit red">bpm</span>
-          </div>
-        </div>
-
-        <div class="vital-item">
-          <div class="vital-meta">
-            <div class="vital-name">Blood Oxygen</div>
-            <div class="vital-sub">SpO₂ last night</div>
-          </div>
-          <div class="vital-val-wrap">
-            <span class="vital-val teal" id="val-spo2">--</span>
-            <span class="vital-unit teal">%</span>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Col C top: Sleep -->
-    <div class="panel panel-sleep">
+    <section class="panel panel-sleep">
       <div class="panel-label">Sleep</div>
 
       <div class="sleep-header">
@@ -109,80 +113,92 @@
         <div class="sleep-scores">
           <div class="sleep-score-item">
             <div class="sleep-score-label">Performance</div>
-            <div class="sleep-score-val purple" id="sleep-perf">--%</div>
+            <div class="sleep-score-val" id="sleep-perf">--%</div>
           </div>
           <div class="sleep-score-item">
             <div class="sleep-score-label">Efficiency</div>
-            <div class="sleep-score-val purple" id="sleep-eff">--%</div>
+            <div class="sleep-score-val" id="sleep-eff">--%</div>
           </div>
         </div>
       </div>
 
-      <div class="stage-bars">
-        <div class="stage-row">
-          <div class="stage-name">REM</div>
-          <div class="stage-track"><div class="stage-fill s-rem" id="bar-rem"></div></div>
-          <div class="stage-pct" id="pct-rem">--%</div>
+      <div class="stage-block">
+        <div class="stage-stack" aria-hidden="true">
+          <div class="stage-fill s-rem" id="bar-rem"></div>
+          <div class="stage-fill s-deep" id="bar-deep"></div>
+          <div class="stage-fill s-light" id="bar-light"></div>
         </div>
-        <div class="stage-row">
-          <div class="stage-name">Deep</div>
-          <div class="stage-track"><div class="stage-fill s-deep" id="bar-deep"></div></div>
-          <div class="stage-pct" id="pct-deep">--%</div>
-        </div>
-        <div class="stage-row">
-          <div class="stage-name">Light</div>
-          <div class="stage-track"><div class="stage-fill s-light" id="bar-light"></div></div>
-          <div class="stage-pct" id="pct-light">--%</div>
+        <div class="stage-legend">
+          <div class="stage-key">
+            <span class="key-dot s-rem"></span>
+            <span class="key-name">REM</span>
+            <span class="key-hrs" id="hrs-rem">--</span>
+            <span class="key-pct" id="pct-rem">--</span>
+          </div>
+          <div class="stage-key">
+            <span class="key-dot s-deep"></span>
+            <span class="key-name">Deep</span>
+            <span class="key-hrs" id="hrs-deep">--</span>
+            <span class="key-pct" id="pct-deep">--</span>
+          </div>
+          <div class="stage-key">
+            <span class="key-dot s-light"></span>
+            <span class="key-name">Light</span>
+            <span class="key-hrs" id="hrs-light">--</span>
+            <span class="key-pct" id="pct-light">--</span>
+          </div>
         </div>
       </div>
 
       <div class="resp-row">
-        <span class="resp-label">Respiratory Rate</span>
+        <span class="resp-label">Respiratory rate</span>
         <span class="resp-val" id="val-resp">--</span>
         <span class="resp-unit">rpm</span>
       </div>
-    </div>
+    </section>
 
-    <!-- Col C bottom: Strain + Workouts -->
-    <div class="panel panel-strain">
-      <div class="panel-label">Strain</div>
-
-      <div class="strain-hero">
-        <span class="strain-val" id="strain-val">--</span>
-        <span class="strain-max">/ 21</span>
-      </div>
-
-      <div class="strain-track-wrap">
-        <div class="strain-track">
-          <div class="strain-fill" id="strain-fill"></div>
+    <section class="panel panel-strain">
+      <div class="strain-layout">
+        <div class="strain-main">
+          <div class="panel-label">Strain</div>
+          <div class="strain-hero">
+            <span class="strain-val" id="strain-val">--</span>
+            <span class="strain-max">/ 21</span>
+          </div>
+          <div class="strain-track-wrap">
+            <div class="strain-track">
+              <div class="strain-fill" id="strain-fill"></div>
+            </div>
+            <div class="strain-ticks">
+              <span>0</span><span>7</span><span>14</span><span>21</span>
+            </div>
+          </div>
         </div>
-        <div class="strain-ticks">
-          <span>0</span><span>7</span><span>14</span><span>21</span>
+        <div class="strain-side">
+          <div class="panel-label">Activity</div>
+          <div class="workouts" id="workouts-container">
+            <div class="no-workouts" id="no-workouts">No workouts logged today</div>
+          </div>
         </div>
       </div>
-
-      <div class="workouts" id="workouts-container">
-        <div class="no-workouts" id="no-workouts">No workouts logged today</div>
-      </div>
-    </div>
+    </section>
 
   </div>
 
-  <!-- ── Footer: body stats ── -->
   <footer class="body-bar">
     <div class="body-stat">
       <div class="body-label">Height</div>
-      <div class="body-val"><span id="val-height">--</span><span class="body-unit"> cm</span></div>
+      <div class="body-val"><span id="val-height">--</span><span class="body-unit">cm</span></div>
     </div>
     <div class="body-divider"></div>
     <div class="body-stat">
       <div class="body-label">Weight</div>
-      <div class="body-val"><span id="val-weight">--</span><span class="body-unit"> kg</span></div>
+      <div class="body-val"><span id="val-weight">--</span><span class="body-unit">kg</span></div>
     </div>
     <div class="body-divider"></div>
     <div class="body-stat">
       <div class="body-label">Max HR</div>
-      <div class="body-val"><span id="val-maxhr">--</span><span class="body-unit"> bpm</span></div>
+      <div class="body-val"><span id="val-maxhr">--</span><span class="body-unit">bpm</span></div>
     </div>
   </footer>
 
@@ -190,12 +206,12 @@
 
 <script>
   const RADIUS = 82
-  const CIRCUMFERENCE = 2 * Math.PI * RADIUS  // ~515.2
+  const CIRCUMFERENCE = 2 * Math.PI * RADIUS
 
   function scoreColor(s) {
-    if (s >= 67) return '#00c389'
-    if (s >= 34) return '#f5c518'
-    return '#ff4d4d'
+    if (s >= 67) return '#3ee0a0'
+    if (s >= 34) return '#f0c14a'
+    return '#ff6b6b'
   }
 
   function scoreLabel(s) {
@@ -205,20 +221,18 @@
   }
 
   function strainColor(s) {
-    if (s >= 14) return '#fb7185'
-    if (s >= 7)  return '#f5c518'
-    return '#00c389'
+    if (s >= 14) return '#ff7d97'
+    if (s >= 7)  return '#f0c14a'
+    return '#7eb6ff'
   }
 
   function applyData(d) {
 
-    // Profile
     if (d.profile) {
       document.getElementById('profile-name').textContent =
         `${d.profile.first_name} ${d.profile.last_name}`
     }
 
-    // Recovery ring + vitals
     if (d.latest) {
       const { score, hrv, rhr, spo2 } = d.latest
       const color = scoreColor(score)
@@ -227,7 +241,7 @@
       arc.style.strokeDasharray  = CIRCUMFERENCE
       arc.style.strokeDashoffset = CIRCUMFERENCE * (1 - score / 100)
       arc.style.stroke  = color
-      arc.style.filter  = `drop-shadow(0 0 10px ${color}70)`
+      arc.style.filter  = `drop-shadow(0 0 14px ${color}88)`
       document.documentElement.style.setProperty('--recovery-glow', color)
 
       const scoreEl = document.getElementById('ring-score')
@@ -235,17 +249,16 @@
       document.getElementById('ring-num').textContent = Math.round(score)
 
       const badge = document.getElementById('score-badge')
-      badge.textContent  = '● ' + scoreLabel(score)
+      badge.textContent  = scoreLabel(score)
       badge.style.color  = color
-      badge.style.background   = color + '14'
-      badge.style.borderColor  = color + '28'
+      badge.style.background   = color + '18'
+      badge.style.borderColor  = color + '38'
 
       document.getElementById('val-hrv').textContent  = Math.round(hrv)
       document.getElementById('val-rhr').textContent  = Math.round(rhr)
       document.getElementById('val-spo2').textContent = parseFloat(spo2).toFixed(1)
     }
 
-    // Body measurements
     if (d.body) {
       const { height_meter, weight_kilogram, max_heart_rate } = d.body
       document.getElementById('val-height').textContent = Math.round(height_meter * 100)
@@ -253,7 +266,6 @@
       document.getElementById('val-maxhr').textContent  = max_heart_rate
     }
 
-    // Sleep
     if (d.sleeps && d.sleeps.length > 0) {
       const s = d.sleeps[0]
       const totalH = parseFloat(s.durationHours)
@@ -267,7 +279,6 @@
       if (s.efficiency != null)
         document.getElementById('sleep-eff').textContent = Math.round(s.efficiency) + '%'
 
-      // Stages are in hours — normalize to %
       const rem   = parseFloat(s.rem)       || 0
       const deep  = parseFloat(s.deepSleep) || 0
       const light = parseFloat(s.light)     || 0
@@ -283,23 +294,25 @@
         document.getElementById('pct-rem').textContent   = Math.round(rp) + '%'
         document.getElementById('pct-deep').textContent  = Math.round(dp) + '%'
         document.getElementById('pct-light').textContent = Math.round(lp) + '%'
+        document.getElementById('hrs-rem').textContent   = rem.toFixed(1) + 'h'
+        document.getElementById('hrs-deep').textContent  = deep.toFixed(1) + 'h'
+        document.getElementById('hrs-light').textContent = light.toFixed(1) + 'h'
       }
 
       if (s.respiratoryRate != null)
         document.getElementById('val-resp').textContent = parseFloat(s.respiratoryRate).toFixed(1)
     }
 
-    // Strain
     if (d.cycles && d.cycles.length > 0) {
       const strain = parseFloat(d.cycles[0].strain) || 0
       document.getElementById('strain-val').textContent = strain.toFixed(1)
       const fill = document.getElementById('strain-fill')
       fill.style.width = Math.min(strain / 21 * 100, 100) + '%'
       const sc = strainColor(strain)
-      fill.style.background = `linear-gradient(90deg, ${sc}55, ${sc})`
+      fill.style.background = `linear-gradient(90deg, ${sc}66, ${sc})`
+      document.getElementById('strain-val').style.color = sc
     }
 
-    // Workouts
     if (d.workouts && d.workouts.length > 0) {
       document.getElementById('no-workouts').style.display = 'none'
       const container = document.getElementById('workouts-container')
@@ -309,7 +322,7 @@
         const item = document.createElement('div')
         item.className = 'workout-item'
         const strainStr = w.strain != null ? `<span class="wstat">${parseFloat(w.strain).toFixed(1)}<span class="wunit"> strain</span></span>` : ''
-        const hrStr     = w.avgHr  != null ? `<span class="wstat">${Math.round(w.avgHr)}<span class="wunit"> avg bpm</span></span>` : ''
+        const hrStr     = w.avgHr  != null ? `<span class="wstat">${Math.round(w.avgHr)}<span class="wunit"> bpm</span></span>` : ''
         const kjStr     = w.kj     != null ? `<span class="wstat">${Math.round(w.kj)}<span class="wunit"> kJ</span></span>` : ''
         item.innerHTML = `
           <div class="workout-sport">${w.sport || 'Workout'}</div>
@@ -350,8 +363,8 @@
   setInterval(loadData, 45 * 60 * 1000)
 
   const fsBtn = document.getElementById('fs-btn')
-  const expandSVG = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>`
-  const compressSVG = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="10" y1="14" x2="3" y2="21"/><line x1="21" y1="3" x2="14" y2="10"/></svg>`
+  const expandSVG = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>`
+  const compressSVG = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="10" y1="14" x2="3" y2="21"/><line x1="21" y1="3" x2="14" y2="10"/></svg>`
 
   function updateFsIcon() {
     fsBtn.innerHTML = (document.fullscreenElement || document.webkitFullscreenElement) ? compressSVG : expandSVG
