@@ -13,6 +13,18 @@ async function fetchAll(endpoint, params = {}) {
   return records
 }
 
+// WHOOP collection endpoints are newest-first (related sleep start, descending).
+// Pending and unscorable rows have no score; the app shows the newest scored recovery.
+function selectLatestRecovery(recoveries) {
+  return recoveries
+    .filter(r =>
+      r.score_state !== 'PENDING_SCORE' &&
+      r.score_state !== 'UNSCORABLE' &&
+      r.score?.recovery_score != null
+    )
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))[0] || null
+}
+
 exports.getData = async (req, res) => {
   // todayStart from client (local midnight ISO); fallback to 24h ago
   const todayStart = req.query.since || new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
@@ -29,7 +41,7 @@ exports.getData = async (req, res) => {
       fetchAll('/v2/cycle', { start: sleepStart })
     ])
 
-    const latest = recoveries[recoveries.length - 1]
+    const latest = selectLatestRecovery(recoveries)
 
     res.set('Cache-Control', 'no-store')
     res.json({
