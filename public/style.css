@@ -16,9 +16,8 @@
 
   --recovery-glow: transparent;
 
-  --display: 'Instrument Serif', Georgia, serif;
-  --num: 'Manrope', 'Outfit', sans-serif;
-  --body: 'Manrope', 'Outfit', sans-serif;
+  --num: 'Switzer', sans-serif;
+  --body: 'Switzer', sans-serif;
   --r: 24px;
 }
 
@@ -224,23 +223,23 @@ body {
 }
 
 .ring-score {
-  font-family: var(--display);
-  font-weight: 400;
-  font-size: clamp(68px, 6.4vw, 96px);
-  line-height: 0.8;
-  letter-spacing: -0.03em;
-  font-variant-numeric: tabular-nums;
+  font-family: var(--num);
+  font-weight: 500;
+  font-size: clamp(62px, 5.6vw, 84px);
+  line-height: 0.9;
+  letter-spacing: -0.055em;
+  font-variant-numeric: tabular-nums lining-nums;
   transition: color 0.45s ease;
 }
 
 .ring-pct {
-  font-family: var(--body);
+  font-family: var(--num);
   font-weight: 500;
-  font-size: 0.28em;
-  letter-spacing: 0;
-  margin-left: 2px;
-  opacity: 0.72;
-  vertical-align: super;
+  font-size: 0.34em;
+  letter-spacing: -0.04em;
+  margin-left: 1px;
+  opacity: 0.62;
+  vertical-align: 0.45em;
 }
 
 .ring-sublabel {
