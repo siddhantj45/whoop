@@ -665,6 +665,17 @@ body {
 
 /* ── Phone portrait ── */
 @media screen and (orientation: portrait) and (max-width: 720px) {
+  html, body {
+    height: auto;
+    min-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  .frame {
+    height: auto;
+    min-height: 100dvh;
+  }
+
   .topbar { height: 48px; padding: 0 14px; }
   .topbar-left, .topbar-right { min-width: 0; }
   .topbar-name { font-size: 13px; }
@@ -672,14 +683,22 @@ body {
   .topbar-right { font-size: 13px; gap: 8px; }
 
   .grid {
+    flex: none;
     grid-template-columns: 1fr;
-    grid-template-rows: minmax(0, 1.28fr) minmax(0, 1.05fr) minmax(0, 0.72fr);
+    grid-template-rows: auto auto auto;
     gap: 8px;
-    padding: 0 8px 8px;
+    padding: 0 8px 16px;
+    overflow: visible;
   }
 
-  .panel { padding: 14px; border-radius: 18px; }
+  .panel {
+    padding: 14px;
+    border-radius: 18px;
+    overflow: visible;
+    min-height: 0;
+  }
   .panel-recovery, .panel-sleep, .panel-strain { grid-column: 1; grid-row: auto; }
+  .panel-sleep { justify-content: flex-start; }
 
   .recovery-body {
     grid-template-columns: 1fr;
@@ -710,10 +729,11 @@ body {
   .sleep-score-item { min-width: 0; padding: 6px 8px; }
   .sleep-score-label { font-size: 8px; letter-spacing: 0.08em; }
   .sleep-score-val { font-size: 16px; }
-  .stage-block { margin-top: 12px; gap: 8px; }
+  .stage-block { margin-top: 14px; gap: 10px; }
   .key-hrs { font-size: 13px; }
-  .resp-row { padding-top: 10px; }
+  .resp-row { margin-top: 14px; padding-top: 12px; }
   .resp-val { font-size: 22px; }
+  .resp-label { font-size: 12px; }
 
   .strain-layout { grid-template-columns: 1fr 1fr; gap: 12px; }
   .strain-side { padding-left: 12px; }
@@ -721,7 +741,7 @@ body {
   .strain-val { font-size: 36px; }
   .strain-max { font-size: 13px; }
   .strain-track-wrap { margin-top: 8px; }
-  .workouts { margin-top: 6px; }
+  .workouts { margin-top: 6px; overflow: visible; }
   .no-workouts { font-size: 12px; }
   .workout-item { padding: 6px 0; }
   .workout-sport, .wstat { font-size: 12px; }
