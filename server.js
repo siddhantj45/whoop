@@ -17,6 +17,16 @@ app.use((req, res, next) => {
 app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')))
 
+// Vercel serves public/ from the CDN and ignores express.static. These routes
+// still return the dashboard if a request reaches the function.
+const publicDir = path.join(__dirname, 'public')
+app.get('/', (req, res) => {
+  res.sendFile(path.join(publicDir, 'index.html'))
+})
+app.get('/style.css', (req, res) => {
+  res.sendFile(path.join(publicDir, 'style.css'))
+})
+
 app.use('/whoop', whoopRouter)
 
 db.sync().catch(err => console.error('DB sync error:', err))
