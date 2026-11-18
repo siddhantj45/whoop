@@ -1,5 +1,7 @@
 {
-  "version": 2,
-  "builds": [{ "src": "server.js", "use": "@vercel/node", "config": { "bundle": false } }],
-  "routes": [{ "src": "/(.*)", "dest": "server.js" }]
+  "functions": {
+    "server.js": {
+      "includeFiles": "{node_modules/**,public/**,controllers/**,routers/**,models/**,utils/**,config/**}"
+    }
+  }
 }
